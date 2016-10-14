@@ -5,7 +5,7 @@ session = Session()
 
 from scapy.all import *
 
-GET_re = re.compile("GET ([a-zA-Z0-9/+?/._]+) HTTP/1.1\r\n")
+GET_re = re.compile("GET ([a-zA-Z0-9\/+?/._]+) HTTP/1.1\r\n")
 HOST_re = re.compile("Host: ((http://)?(th-)?p.talk.kakao.co.kr)\r\n")
 kakao_re = re.compile("http://(th-)?p.talk.kakao.co.kr")
 
@@ -13,15 +13,12 @@ remove_duplicate = {}  # remove duplicate requests
 
 
 def http_header(packet):
-    str_pkt = str(packet)
-
     if packet.haslayer("Dot11Beacon"):
         return
     elif packet.haslayer("TCP") == 0:
         return
 
     str_pkt = str(packet)
-    # print(repr(packet))
     matched_GET = GET_re.findall(str_pkt)
     matched_HOST = HOST_re.findall(str_pkt)
 
@@ -43,6 +40,7 @@ def http_header(packet):
             session.commit()
 
     else:
+        print("No Kakao")
         pass
         # print "No KaKao"
 
