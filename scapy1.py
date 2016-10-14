@@ -13,9 +13,7 @@ remove_duplicate = {}  # remove duplicate requests
 
 
 def http_header(packet):
-    if packet.haslayer("Dot11Beacon"):
-        return
-    elif packet.haslayer("TCP") == 0:
+    if packet.haslayer("Dot11Beacon") or packet.haslayer("TCP") == 0:
         return
 
     str_pkt = str(packet)
