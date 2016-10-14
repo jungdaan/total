@@ -1,13 +1,18 @@
 #!/usr/bin/python
 from db import *
-
+import re
+import os
+import sqlite3
+import requests
+import sys
+from scapy.all import *
 session = Session()
 
 from scapy.all import *
 
-GET_re = re.compile("GET ([a-zA-Z0-9\/+?/._]+) HTTP/1.1\r\n")
-HOST_re = re.compile("Host: ((http://)?(th-)?p.talk.kakao.co.kr)\r\n")
-kakao_re = re.compile("http://(th-)?p.talk.kakao.co.kr")
+GET_re = re.compile('GET ([a-zA-Z0-9\/+?/._]+) HTTP/1.1\r\n')
+HOST_re = re.compile('Host: ((http://)?(th-)?p.talk.kakao.co.kr)\r\n')
+kakao_re = re.compile('http://(th-)?p.talk.kakao.co.kr')
 
 remove_duplicate = {}  # remove duplicate requests
 
@@ -15,10 +20,17 @@ remove_duplicate = {}  # remove duplicate requests
 def http_header(packet):
     if packet.haslayer("Dot11Beacon") or packet.haslayer("TCP") == 0:
         return
+    try:
+        str_pkt = packet.getlayer(TCP).payload.load.decode()
+    except (AttributeError, UnicodeDecodeError):
+        return None
 
-    str_pkt = str(packet)
     matched_GET = GET_re.findall(str_pkt)
     matched_HOST = HOST_re.findall(str_pkt)
+
+    print(str_pkt)
+    print(matched_GET)
+    print(matched_HOST)   
 
     global remove_duplicate
 
