@@ -57,18 +57,18 @@ def http_header(packet):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        if sys.argv[1] not in ["live", "pcap"]:
-            print("Input Condition 'live' or 'pcap'")
-            print("USAGE : %s Condition - live or pcap" % sys.argv[0])
-            sys.exit()
+        print("Input Condition 'interface' or 'pcap'")
+        print("USAGE : %s Condition - interface or pcap" % sys.argv[0])
+        sys.exit()
 
     else:
-        if sys.argv[1] == "live":
-            sniff(iface="wlan0", prn=http_header, filter="tcp port 80")
-        elif sys.argv[1] == "pcap":
+        if sys.argv[1] == "pcap":
             filename = input("Input File Name : ")
             now_path = os.path.dirname(os.path.abspath(__file__))
             pcap_path = os.path.join(now_path, filename)
             pcap = rdpcap(pcap_path)
             for packet in pcap:
                 http_header(packet)
+        else:
+            sniff(iface=sys.argv[1], prn=http_header, filter="tcp port 80")
+        

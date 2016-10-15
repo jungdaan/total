@@ -43,16 +43,16 @@ def dns_handler(data):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        if sys.argv[1] not in ["live", "pcap"]:
-            print("Input Condition 'live' or 'pcap'")
-            sys.exit()
+        print("Input Condition 'interface' or 'pcap'")
+        sys.exit()
     else:
-        if sys.argv[1] == "live":
-            sniff(iface="wlan0", prn=dns_handler, filter="udp port 53")
-        elif sys.argv[1] == "pcap":
+        if sys.argv[1] == "pcap":
             filename = input("Input File Name : ")
             now_path = os.path.dirname(os.path.abspath(__file__))
             pcap_path = os.path.join(now_path, filename)
             pcap = rdpcap(pcap_path)
             for packet in pcap:
                 dns_handler(packet)
+        else:
+            sniff(iface=sys.argv[1], prn=dns_handler, filter="udp port 53")
+        

