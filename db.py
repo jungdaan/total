@@ -63,6 +63,22 @@ class MailList(Base):
     def __repr__(self):
         return "<MailList %s>" % self.username
 
+class CookieList(Base):
+    __tablename__ = 'cookies'
+
+    id = Column(Integer, primary_key=True)
+    domain = Column(String(50), nullable=False)
+    cookie = Column(String(3000), nullable=False)
+    captured_time = Column(String(25), nullable=False)
+
+    def __init__(self, domain, cookie, captured_time):
+        self.domain = domain
+        self.cookie = cookie
+        self.captured_time = captured_time
+
+    def __repr__(self):
+        return "<Cookie %s>" % self.domain
+
 
 class MailSize(Base):
     __tablename__ = 'mailsize'
