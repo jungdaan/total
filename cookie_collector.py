@@ -48,7 +48,7 @@ if __name__ == '__main__':
         pcap_path = os.path.join(now_path, filename)
         pcap = rdpcap(pcap_path)
         for packet in pcap:
-            cookie_sniff(packet)
+            cookie_collect(packet)
     else:
         # sniff(iface="wlan0", prn=cookie_sniff, filter="tcp port 80 and src host not " + ip)
         sniff(iface=sys.argv[1], prn=cookie_collect, filter="tcp port 80")
