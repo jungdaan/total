@@ -85,7 +85,7 @@ def mail_json_sniff(COOKIE_HASH_TABLE):
         return
 
     user_name = json_mail['env']['userName']
-    
+    #print(SIZE_LIST)
     try:
         time_duplicate[user_name]
     except:
@@ -139,6 +139,9 @@ if __name__ == '__main__':
     s.connect(('8.8.8.8', 0))
     ip = s.getsockname()[0]
     print(ip)
+
+
+
 
     if sys.argv[1] == "pcap":
         filename = input("Input File Name : ")

@@ -13,12 +13,14 @@ import kakao_sniffer
 import cookie_collector
 import db_dns
 
+SIZE_LIST = []
+time_duplicate = {}
 
 session = Session()
 
 def plugin_handler(packet):
 	if packet.haslayer("TCP"):
-		naver_mail_list_sniffer.cookie_sniff(packet)
+		naver_mail_list_sniffer.cookie_sniff(packet, SIZE_LIST, time_duplicate)
 		kakao_sniffer.http_header(packet)
 		cookie_collector.cookie_collect(packet)
 	elif packet.haslayer("DNS"):
