@@ -8,12 +8,14 @@ import sys
 from scapy.all import *
 session = Session()
 
-GET_re = re.compile('GET ([a-zA-Z0-9\/+?/._]+) HTTP/1.1\r\n')
-HOST_re = re.compile('Host: (http://)? ([a-zA-Z0-9\/+?/._]+)\r\n')
+# GET_re = re.compile('GET ([a-zA-Z0-9\/+?/._]+) HTTP/1.1\r\n')
+# HOST_re = re.compile('Host: ((http://)?)(([a-zA-Z0-9\/+?/._]+)?\r\n')
 remove_duplicate = {}  # remove duplicate requests
 
 
 def http_header(packet):
+    import pdb
+    pdb.set_trace()
     if packet.haslayer("Dot11Beacon") or packet.haslayer("TCP") == 0:
         return
     try:
@@ -24,7 +26,6 @@ def http_header(packet):
     matched_GET = GET_re.findall(str_pkt)
     matched_HOST = HOST_re.findall(str_pkt)
 
-    #print(str_pkt)
     #print(matched_GET)
     #print(matched_HOST)   
 
@@ -51,14 +52,16 @@ def http_header(packet):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Input Condition 'interface' or 'pcap'")
-        print("USAGE : %s Condition - interface or pcap" % sys.argv[0])
-        sys.exit()
+    # if len(sys.argv) != 2:
+    #     print("Input Condition 'interface' or 'pcap'")
+    #     print("USAGE : %s Condition - interface or pcap" % sys.argv[0])
+    #     sys.exit()
 
-    else:
-        if sys.argv[1] == "pcap":
-            filename = input("Input File Name : ")
+    if 1==1:
+        asdf = "pcap"
+        if asdf == "pcap":
+            # filename = input("Input File Name : ")
+            filename = "daniii.pcap"
             now_path = os.path.dirname(os.path.abspath(__file__))
             pcap_path = os.path.join(now_path, filename)
             pcap = rdpcap(pcap_path)
